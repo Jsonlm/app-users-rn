@@ -1,0 +1,47 @@
+.formMain {
+    color: #fff;
+    background: linear-gradient(0.55turn, #c78ac38f , #ad56a88f );
+    border-radius: 5px;
+    margin: auto;
+    padding: 25px;
+    width: 70%;
+}
+
+.formTitle {
+    text-align: center;
+}
+
+.formInput {
+    @extend .formTopSpace;
+    border-radius: 10px;
+    border: none;
+    font-size: large;
+    height: 40px;
+    padding: 0 10px 0 10px;
+    width: -webkit-fill-available;
+}
+
+.formPage {
+    background-color: #450540;
+    display: grid;
+    height: 100vh;
+}
+
+.formSubmit {
+    @extend .formTopSpace;
+    background: linear-gradient(0.5turn, #bd4eb4 , #850d7b );
+    border: 1px solid #bd4eb4;
+    border-radius: 10px;
+    color: #fff;
+    height: 40px;
+    font-size: large;
+    width: 100%;
+}
+
+.formTopSpace {
+    margin-top: 20px;
+}
+
+.formErrorSpace {
+    margin-top: 10px;
+}
