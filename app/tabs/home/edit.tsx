@@ -29,14 +29,24 @@ export default function EditScreen() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        const nombreEdit = await AsyncStorage.getItem("nombreEdit");
+        const isEdit: Boolean | null = Boolean(AsyncStorage.getItem("edit"));
+        console.log("IS EDIT?", isEdit);
+        
+  
+        if (!nombreEdit) {
+          ToastAndroid.show("No se encontró 'nombreEdit' en el almacenamiento.", 1000);
+          return;
+        }
+
         const storedData = await AsyncStorage.getItem("localStorageArray");
-        if (storedData) {
+
+        if (storedData && isEdit === true && isEdit !== null) {
           const users = JSON.parse(storedData);
           console.log("Usuarios almacenados:", users);
-          console.log("Parámetros recibidos:", params);
-
-          // Buscar usuario con params.name
-          const user = users.find((user: any) => user.nombre === params.nombre);
+          console.log("Nombre a editar:", nombreEdit);
+  
+          const user = users.find((user: any) => user.nombre === nombreEdit);
           if (user) {
             setUserData(user);
           } else {
@@ -47,10 +57,9 @@ export default function EditScreen() {
         console.error("Error al obtener datos:", error);
       }
     };
-
+  
     fetchUserData();
-  }, [params]);
-
+  }, []);
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
@@ -78,7 +87,6 @@ export default function EditScreen() {
       ),
     });
   }, [navigation]);
-
 
   return (
     <SafeAreaView style={{ flex: 1, padding: 20 }}>

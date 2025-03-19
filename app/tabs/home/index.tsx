@@ -9,6 +9,7 @@ import {
   Animated,
   TouchableOpacity,
   ToastAndroid,
+  Button,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
@@ -17,6 +18,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CustomModal from "@/app/shared-components/custom-modal";
 
+
+type RootStackParamList = {
+  edit: { nombre: string };
+};
 
 const DATA = [
   {
@@ -39,8 +44,8 @@ const DATA2 = [
 AsyncStorage.setItem('titleList', JSON.stringify(DATA[0].title));
 
 export default function Index() {
-  const navigation = useNavigation();
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);  
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     navigation.setOptions({ title: `Bienvenido ${'Gustavo Duque'}` });
@@ -79,6 +84,14 @@ export default function Index() {
     }
   };
 
+  const onCreate = ()=> {
+    AsyncStorage.setItem("nombreEdit", "");
+    AsyncStorage.setItem('edit', String(false));
+    setTimeout(() => {
+      navigation.navigate("edit", { nombre: ""  });
+    }, 1000);
+  }
+
   // Reestructurar los datos para SectionList
   const sections = [
     {
@@ -111,18 +124,14 @@ export default function Index() {
           />
         </SafeAreaView>
       </LinearGradient>
+      <Button title="add" onPress={()=> {onCreate()}}/>
+
     </SafeAreaProvider>
   );
 }
 
-type RootStackParamList = {
-  edit: { nombre: string };
-};
-
 const SwipeableCard = ({ nombre, onDelete }: { nombre: string; onDelete: (nombre: string) => void }) => {
   const [showModal, setShowModal] = useState(false);
-
-
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const translateX = new Animated.Value(0);
   const [showOptions, setShowOptions] = useState(false);
@@ -150,11 +159,18 @@ const SwipeableCard = ({ nombre, onDelete }: { nombre: string; onDelete: (nombre
     }
   };
   const onEdit = () => {
-    navigation.navigate("edit", { nombre });
-    console.log(nombre);
-
+    AsyncStorage.setItem("nombreEdit", nombre);
+    showSpinner();
+    setTimeout(() => {
+      navigation.navigate("edit", { nombre });
+    }, 1000);
   };
 
+
+  const showSpinner = () =>  {
+    console.log("cargando");
+    
+  }
   return (
     <><GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.swipeContainer}>
@@ -162,7 +178,6 @@ const SwipeableCard = ({ nombre, onDelete }: { nombre: string; onDelete: (nombre
         <View style={styles.optionsContainer}>
           <TouchableOpacity style={styles.optionButton}>
             <Text style={styles.optionText} onPress={() => {
-              console.log("Edit")
               onEdit();
             }
             }>Editar</Text>
