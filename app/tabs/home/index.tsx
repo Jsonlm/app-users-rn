@@ -18,7 +18,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CustomModal from "@/app/shared-components/custom-modal";
 
-
 type RootStackParamList = {
   edit: { nombre: string };
 };
@@ -44,7 +43,7 @@ const DATA2 = [
 AsyncStorage.setItem('titleList', JSON.stringify(DATA[0].title));
 
 export default function Index() {
-  const [users, setUsers] = useState<any[]>([]);  
+  const [users, setUsers] = useState<any[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
@@ -84,11 +83,11 @@ export default function Index() {
     }
   };
 
-  const onCreate = ()=> {
+  const onCreate = () => {
     AsyncStorage.setItem("nombreEdit", "");
     AsyncStorage.setItem('edit', String(false));
     setTimeout(() => {
-      navigation.navigate("edit", { nombre: ""  });
+      navigation.navigate("edit", { nombre: "" });
     }, 1000);
   }
 
@@ -124,7 +123,7 @@ export default function Index() {
           />
         </SafeAreaView>
       </LinearGradient>
-      <Button title="add" onPress={()=> {onCreate()}}/>
+      <Button title="add" onPress={() => { onCreate() }} />
 
     </SafeAreaProvider>
   );
@@ -167,9 +166,9 @@ const SwipeableCard = ({ nombre, onDelete }: { nombre: string; onDelete: (nombre
   };
 
 
-  const showSpinner = () =>  {
+  const showSpinner = () => {
     console.log("cargando");
-    
+
   }
   return (
     <><GestureHandlerRootView style={{ flex: 1 }}>
